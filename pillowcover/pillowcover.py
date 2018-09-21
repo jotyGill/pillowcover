@@ -20,17 +20,13 @@ def main():
     parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
     parser.add_argument("image_file", nargs="?", help="Full path to the image file to edit")
     parser.add_argument(
-        "-d",
-        "--dir",
-        dest="dir",
-        help="Full path to the directory containing the image files",
-        type=str,
+        "-d", "--dir", dest="dir", help="Path to the directory containing the image files", type=str
     )
     parser.add_argument(
         "-o",
         "--out-dir",
         dest="output_dir",
-        help="Full path to output directory to store edited images.\
+        help="Path to output directory to store edited images.\
         by default they get stored in (parent director)/pillowcover-output",
         type=str,
     )
@@ -38,21 +34,21 @@ def main():
         "-b",
         "--brightness",
         dest="brightness",
-        help="Change brightness level, 1.0 is the current value",
+        help="Change brightness level, 1.00 is the current value",
         type=float,
     )
     parser.add_argument(
         "-c",
         "--contrast",
         dest="contrast",
-        help="Change contrast level, 1.0 is the current value",
+        help="Change contrast level, 1.00 is the current value",
         type=float,
     )
     parser.add_argument(
         "-s",
         "--sharpness",
         dest="sharpness",
-        help="Change sharpness level, 1.0 is the current value",
+        help="Change sharpness level, 1.00 is the current value",
         type=float,
     )
     parser.add_argument(
@@ -75,7 +71,7 @@ def main():
         "-q",
         "--compression-quality",
         dest="compression",
-        help="Compression quality, 100 means no compression at all",
+        help="Compression quality 1-100, 100 means no compression at all",
         type=int,
     )
 
@@ -138,12 +134,15 @@ def run(
         if not os.path.isdir(dir):
             print("directory does not exist, make sure it's the full path")
             sys.exit(1)
+
+        # get full path, "Downloads" will turn to "/home/user/Downloads/"
+        dir_path = os.path.abspath(dir) + "/"  # glob needs "/"
         extensions = ("*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG")
         # all_imgs = []
         # for extension in extensions:
         #     all_imgs.extend(glob.glob(dir + extension))   # same as following
         all_imgs = []
-        [all_imgs.extend(glob.glob(dir + ext)) for ext in extensions]
+        [all_imgs.extend(glob.glob(dir_path + ext)) for ext in extensions]
 
         if not all_imgs:
             print("directory exists but no image was found in it")
@@ -159,8 +158,7 @@ def run(
 
         # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
-            output_dir = os.path.join(
-                os.path.dirname(os.path.abspath(img)), "pillowcover-output")
+            output_dir = os.path.join(os.path.dirname(os.path.abspath(img)), "pillowcover-output")
 
         # create it if doesn't exist
         if not os.path.exists(output_dir):
