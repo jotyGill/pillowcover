@@ -23,7 +23,7 @@ setuptools.setup(
     author="JGill",
     zip_safe=False,
     author_email="joty@mygnu.org",
-    # url='', #TODO
+    url='https://github.com/jotyGill/pillowcover',
     keywords=["images", "image-minipulation"],
     install_requires=["pillow"],
     platforms=["GNU/Linux", "Ubuntu", "Debian", "Kali", "CentOS", "Arch", "Fedora"],
