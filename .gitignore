@@ -1,0 +1,10 @@
+test*
+imgs
+
+__pycache__
+pillowcover.egg*
+build
+dist
+deb_dist
+*.pyc
+.pytest*
