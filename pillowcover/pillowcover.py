@@ -53,8 +53,16 @@ def main():
         "-r",
         "--resize",
         dest="resize",
+        help='Resize img, keep ratio. provide the maximum length/width\
+        value as one number. e.g pillowcase.py img -r "1920"',
+        type=int,
+    )
+    parser.add_argument(
+        "-R",
+        "--resize-ratio",
+        dest="resize_ratio",
         help='Resize img by providing new length and width\
-        e.g pillowcase.py img -r "640 480"',
+        e.g pillowcase.py img -R "640 480"',
         type=str,
     )
     parser.add_argument(
@@ -74,6 +82,7 @@ def main():
         args.contrast,
         args.sharpness,
         args.resize,
+        args.resize_ratio,
         args.compression,
     )
 
@@ -93,10 +102,18 @@ def adjust_sharpness(image, sharpness):
     return enhancer_object.enhance(sharpness)
 
 
-def resize_img(image, dimensions):
-    length = int(dimensions.split()[0])
-    width = int(dimensions.split()[1])
-    resized_img = image.resize((length, width))
+def resize_img(image, max_dimension):
+    # size = int(dimensions.split()[0]), int(dimensions.split()[1])  # tuple of (width, height)
+    size = max_dimension, max_dimension
+    print(size)
+    # height = int(dimensions.split()[1])
+    image.thumbnail(size, Image.ANTIALIAS)
+
+
+def resize_img_ratio(image, dimensions):
+    width = int(dimensions.split()[0])
+    height = int(dimensions.split()[1])
+    resized_img = image.resize((width, height))
     return resized_img
 
 
@@ -110,7 +127,7 @@ def sharperner(input_image, output_image):
         image.save(output_image)
 
 
-def run(image_file, dir, brightness, contrast, sharpness, resize, compression):
+def run(image_file, dir, brightness, contrast, sharpness, resize, resize_ratio, compression):
     if dir:
         # if '/' not provided at the end add it
         if dir[-1] != "/":
@@ -131,6 +148,9 @@ def run(image_file, dir, brightness, contrast, sharpness, resize, compression):
             sys.exit(1)
         print(all_imgs)
     elif image_file:
+        if not os.path.isfile(image_file):
+            print("provided image not exist, make sure it's the full path")
+            sys.exit(1)
         all_imgs = [image_file]
 
     for img in all_imgs:
@@ -147,7 +167,9 @@ def run(image_file, dir, brightness, contrast, sharpness, resize, compression):
             if sharpness:
                 image = adjust_sharpness(image, sharpness)
             if resize:
-                image = resize_img(image, resize)
+                resize_img(image, resize)
+            if resize_ratio:
+                image = resize_img_ratio(image, resize_ratio)
 
             if compression:
                 image.save(new_name, quality=compression)
