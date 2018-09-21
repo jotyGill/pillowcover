@@ -157,9 +157,10 @@ def run(
     for img in all_imgs:
         img_file_name = os.path.basename(img)
 
-        # if output_dir not provided, save images in the (parent)/pillowcover-output folder
+        # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
-            output_dir = os.path.join(os.path.dirname(os.path.abspath(img)), "pillowcover-output")
+            output_dir = os.path.join(
+                os.path.dirname(os.path.abspath(img)), "pillowcover-output")
 
         # create it if doesn't exist
         if not os.path.exists(output_dir):
