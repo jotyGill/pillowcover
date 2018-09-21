@@ -110,8 +110,7 @@ def adjust_sharpness(image, sharpness):
 
 
 def resize_img(image, max_dimension):
-    # size = int(dimensions.split()[0]), int(dimensions.split()[1])  # tuple of (width, height)
-    size = max_dimension, max_dimension
+    size = max_dimension, max_dimension  # tuple of (max_width, max_height)
     image.thumbnail(size, Image.ANTIALIAS)
 
 
@@ -142,7 +141,7 @@ def run(
         extensions = ("*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG")
         # all_imgs = []
         # for extension in extensions:
-        #     all_imgs.extend(glob.glob(dir + extension))
+        #     all_imgs.extend(glob.glob(dir + extension))   # same as following
         all_imgs = []
         [all_imgs.extend(glob.glob(dir + ext)) for ext in extensions]
 
@@ -156,11 +155,6 @@ def run(
         all_imgs = [image_file]
 
     for img in all_imgs:
-        # new_name = img[: img.rfind(".")] + "-edited" + img[img.rfind(".") :]
-
-        # if individual file was given, find it's directory path
-        # if not dir:
-        #     dir = os.path.dirname(os.path.abspath(img))
         img_file_name = os.path.basename(img)
 
         # if output_dir not provided, save images in the (parent)/pillowcover-output folder
@@ -173,10 +167,6 @@ def run(
 
         new_name = os.path.join(output_dir, img_file_name)
         with Image.open(img) as image:
-            # brightness = 1.2
-            # contrast = 1.5
-            # sharpness = 1.5
-            # resize = ['640', '480']
             if brightness:
                 image = adjust_brightness(image, brightness)
             if contrast:
