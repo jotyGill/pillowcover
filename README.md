@@ -1,22 +1,25 @@
-
-
 # pillowcover
 Easily Manipulate Images Using Python: Change Brightness, Contrast, Sharpness, Resize.
 A simple script (wrapper) using pillow.
 
 ## Requirements
-python3, pillow
+python >= 3.5, pillow
 
 ## Usage
+To increase brightness, contrast, sharpness by 20% and resize all images (landscape, portrait)
+to max dimension of 1920 pixels (using largest dimension. hight or width) and compress them to 60%
+in a given folder while keeping the same aspect ratio.
+
 ``` bash
-pillow -d /home/user/Downloads/ -b 1.2 -c 1.2 -s 1.2 -r "1600 1200" -q 40
+pillowcover -d /home/user/Pictures/ -b 1.2 -c 1.2 -s 1.2 -r 1920 -q 60
 ```
 
 ## Usage Options
 ``` bash
-usage: pillowcover.py [-h] [-v] [-d DIR] [-b BRIGHTNESS] [-c CONTRAST]
-                      [-s SHARPNESS] [-r RESIZE] [-q COMPRESSION]
-                      [image_file]
+usage: pillowcover [-h] [-v] [-d DIR] [-o OUTPUT_DIR] [-b BRIGHTNESS]
+                   [-c CONTRAST] [-s SHARPNESS] [-r RESIZE] [-R RESIZE_RATIO]
+                   [-q COMPRESSION]
+                   [image_file]
 
 Easily Manipulate Images Using Python: Change Brightness,Contrast, Sharpness,
 Resize
@@ -28,6 +31,10 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program\'s version number and exit
   -d DIR, --dir DIR     Full path to the directory containing the image files
+  -o OUTPUT_DIR, --out-dir OUTPUT_DIR
+                        Full path to output directory to store edited images.
+                        by default they get stored in (parent
+                        director)/pillowcover-output
   -b BRIGHTNESS, --brightness BRIGHTNESS
                         Change brightness level, 1.0 is the current value
   -c CONTRAST, --contrast CONTRAST
@@ -35,9 +42,14 @@ optional arguments:
   -s SHARPNESS, --sharpness SHARPNESS
                         Change sharpness level, 1.0 is the current value
   -r RESIZE, --resize RESIZE
+                        Resize img, keep ratio. provide the maximum
+                        length/width value as one number. e.g pillowcase.py
+                        img -r 1920
+  -R RESIZE_RATIO, --resize-ratio RESIZE_RATIO
                         Resize img by providing new length and width e.g
-                        pillowcase.py img -r "640 480"
+                        pillowcase.py img -R "640 480"
   -q COMPRESSION, --compression-quality COMPRESSION
                         Compression quality, 100 means no compression at all
+
 
 ```

@@ -7,14 +7,12 @@ import sys
 
 from PIL import Image, ImageEnhance, ImageFilter
 
-# __version__ = "0.0.1"
 from .__init__ import __version__
 
 __license__ = "GNU General Public License v3 or later (GPLv3+)"
 
 
 def main():
-    # dir = "/home/it/Music/test"
     parser = argparse.ArgumentParser(
         description="Easily Manipulate Images Using Python: Change Brightness,"
         "Contrast, Sharpness, Resize"
@@ -26,6 +24,14 @@ def main():
         "--dir",
         dest="dir",
         help="Full path to the directory containing the image files",
+        type=str,
+    )
+    parser.add_argument(
+        "-o",
+        "--out-dir",
+        dest="output_dir",
+        help="Full path to output directory to store edited images.\
+        by default they get stored in (parent director)/pillowcover-output",
         type=str,
     )
     parser.add_argument(
@@ -53,15 +59,15 @@ def main():
         "-r",
         "--resize",
         dest="resize",
-        help='Resize img, keep ratio. provide the maximum length/width\
-        value as one number. e.g pillowcase.py img -r "1920"',
+        help="Resize img, keep ratio. provide the maximum length/width\
+        value as one number. e.g pillowcase.py img -r 1920",
         type=int,
     )
     parser.add_argument(
         "-R",
         "--resize-ratio",
         dest="resize_ratio",
-        help='Resize img by providing new length and width\
+        help='Resize img by providing new width and length\
         e.g pillowcase.py img -R "640 480"',
         type=str,
     )
@@ -78,6 +84,7 @@ def main():
     run(
         args.image_file,
         args.dir,
+        args.output_dir,
         args.brightness,
         args.contrast,
         args.sharpness,
@@ -105,8 +112,6 @@ def adjust_sharpness(image, sharpness):
 def resize_img(image, max_dimension):
     # size = int(dimensions.split()[0]), int(dimensions.split()[1])  # tuple of (width, height)
     size = max_dimension, max_dimension
-    print(size)
-    # height = int(dimensions.split()[1])
     image.thumbnail(size, Image.ANTIALIAS)
 
 
@@ -127,12 +132,10 @@ def sharperner(input_image, output_image):
         image.save(output_image)
 
 
-def run(image_file, dir, brightness, contrast, sharpness, resize, resize_ratio, compression):
+def run(
+    image_file, dir, output_dir, brightness, contrast, sharpness, resize, resize_ratio, compression
+):
     if dir:
-        # if '/' not provided at the end add it
-        if dir[-1] != "/":
-            dir = dir + "/"
-
         if not os.path.isdir(dir):
             print("directory does not exist, make sure it's the full path")
             sys.exit(1)
@@ -146,7 +149,6 @@ def run(image_file, dir, brightness, contrast, sharpness, resize, resize_ratio, 
         if not all_imgs:
             print("directory exists but no image was found in it")
             sys.exit(1)
-        print(all_imgs)
     elif image_file:
         if not os.path.isfile(image_file):
             print("provided image not exist, make sure it's the full path")
@@ -154,7 +156,22 @@ def run(image_file, dir, brightness, contrast, sharpness, resize, resize_ratio, 
         all_imgs = [image_file]
 
     for img in all_imgs:
-        new_name = img[: img.rfind(".")] + "-new" + img[img.rfind(".") :]
+        # new_name = img[: img.rfind(".")] + "-edited" + img[img.rfind(".") :]
+
+        # if individual file was given, find it's directory path
+        # if not dir:
+        #     dir = os.path.dirname(os.path.abspath(img))
+        img_file_name = os.path.basename(img)
+
+        # if output_dir not provided, save images in the (parent)/pillowcover-output folder
+        if not output_dir:
+            output_dir = os.path.join(os.path.dirname(os.path.abspath(img)), "pillowcover-output")
+
+        # create it if doesn't exist
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+
+        new_name = os.path.join(output_dir, img_file_name)
         with Image.open(img) as image:
             # brightness = 1.2
             # contrast = 1.5
@@ -173,9 +190,11 @@ def run(image_file, dir, brightness, contrast, sharpness, resize, resize_ratio, 
 
             if compression:
                 image.save(new_name, quality=compression)
+                print("saving image {}".format(new_name))
             else:
-                # image.save(new_name)
-                image.show()
+                image.save(new_name)
+                print("saving image {}".format(new_name))
+                # image.show()
 
 
 if __name__ == "__main__":
