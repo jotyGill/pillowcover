@@ -23,12 +23,17 @@ setuptools.setup(
     author="JGill",
     zip_safe=False,
     author_email="joty@mygnu.org",
-    url='https://github.com/jotyGill/pillowcover',
+    url="https://github.com/jotyGill/pillowcover",
     keywords=["images", "image-minipulation"],
     install_requires=["pillow"],
     platforms=["GNU/Linux", "Ubuntu", "Debian", "Kali", "CentOS", "Arch", "Fedora"],
     packages=setuptools.find_packages(),
-    entry_points={"console_scripts": ["pillowcover = pillowcover.pillowcover:main"]},
+    entry_points={
+        "console_scripts": [
+            "pillowcover = pillowcover.pillowcover:main",
+            "plc = pillowcover.pillowcover:main",
+        ]
+    },
     long_description=full_description,
     long_description_content_type="text/markdown",
     classifiers=[
