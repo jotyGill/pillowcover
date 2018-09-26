@@ -7,15 +7,14 @@ import sys
 
 from PIL import Image, ImageEnhance, ImageFilter
 
-from .__init__ import __version__
-
-__license__ = "GNU General Public License v3 or later (GPLv3+)"
+from .__init__ import __license__, __version__
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Easily Manipulate Images Using Python: Change Brightness,"
-        "Contrast, Sharpness, Resize"
+        description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
+        " Sharpness, Resize and Compress. A simple script (wrapper) using pillow."
+        " Licensed Under: {}".format(__license__)
     )
     parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
     parser.add_argument("image_file", nargs="?", help="Full path to the image file to edit")

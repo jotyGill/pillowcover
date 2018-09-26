@@ -1,6 +1,7 @@
 # pillowcover
-Easily Manipulate Images Using Python: Change Brightness, Contrast, Sharpness, Resize.
+Mass Manipulate Images Using Python: Change Brightness, Contrast, Sharpness, Resize and Compress.
 A simple script (wrapper) using pillow.
+Licensed Under: GNU General Public License v3 or later (GPLv3+)
 
 ## Requirements
 python >= 3.5, pillow
