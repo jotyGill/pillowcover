@@ -153,7 +153,15 @@ def run(
         all_imgs = [image_file]
 
     for img in all_imgs:
-        img_file_name = os.path.basename(img)
+        # if resizing, include resize value in img name
+        if resize:
+            img_file_name = "{}_{}{}".format(
+                os.path.splitext(os.path.basename(img))[0],
+                str(resize),
+                os.path.splitext(os.path.basename(img))[1],
+            )
+        else:
+            img_file_name = os.path.basename(img)
 
         # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
