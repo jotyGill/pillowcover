@@ -67,6 +67,15 @@ def main():
         type=str,
     )
     parser.add_argument(
+        "-k",
+        "--crop",
+        dest="crop",
+        help='Crop img by providing starting point then width and length from it\
+        e.g pillowcase.py img -k "0,0,640,480"',
+        type=str,
+    )
+
+    parser.add_argument(
         "-q",
         "--compression-quality",
         dest="compression",
@@ -85,6 +94,7 @@ def main():
         args.sharpness,
         args.resize,
         args.resize_ratio,
+        args.crop,
         args.compression,
     )
 
@@ -116,6 +126,13 @@ def resize_img_ratio(image, dimensions):
     return resized_img
 
 
+def crop_img(image, dimensions):
+    dimensions_list = [int(i) for i in dimensions.split(',')]
+    dimensions_tuple = tuple(dimensions_list)
+    cropped_img = image.crop(dimensions_tuple)
+    return cropped_img
+
+
 def sharperner(input_image, output_image):
     with Image.open(input_image) as image:
         try:
@@ -127,7 +144,7 @@ def sharperner(input_image, output_image):
 
 
 def run(
-    image_file, dir, output_dir, brightness, contrast, sharpness, resize, resize_ratio, compression
+    image_file, dir, output_dir, brightness, contrast, sharpness, resize, resize_ratio, crop, compression
 ):
     if dir:
         if not os.path.isdir(dir):
@@ -153,16 +170,19 @@ def run(
         all_imgs = [image_file]
 
     for img in all_imgs:
+        extension = "jpg"
+        if not extension:
+            extension = os.path.splitext(os.path.basename(img))[1]
         # if resizing, include resize value in img name
         if resize:
-            img_file_name = "{}_{}{}".format(
+            img_file_name = "{}_{}.{}".format(
                 os.path.splitext(os.path.basename(img))[0],
                 str(resize),
-                os.path.splitext(os.path.basename(img))[1],
+                extension,
             )
         else:
-            img_file_name = os.path.basename(img)
-
+            img_file_name = "{}.{}".format(os.path.splitext(os.path.basename(img))[0], extension)
+        print(img_file_name)
         # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
             output_dir = os.path.join(os.path.dirname(os.path.abspath(img)), "pillowcover-output")
@@ -173,6 +193,8 @@ def run(
 
         new_name = os.path.join(output_dir, img_file_name)
         with Image.open(img) as image:
+            if crop:
+                image = crop_img(image, crop)
             if brightness:
                 image = adjust_brightness(image, brightness)
             if contrast:
@@ -183,6 +205,10 @@ def run(
                 resize_img(image, resize)
             if resize_ratio:
                 image = resize_img_ratio(image, resize_ratio)
+
+            # converting PNG to JPG, fixes error
+            if extension.lower() == "jpg" and image.mode in ("RGBA", "P"):
+                image = image.convert("RGB")
 
             if compression:
                 image.save(new_name, quality=compression)
