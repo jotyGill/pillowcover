@@ -83,6 +83,14 @@ def main():
         type=int,
     )
 
+    parser.add_argument(
+        "-x",
+        "--extension",
+        help="Specifiy the output extension. Can be 'jpg', 'jpeg', 'png'\
+        Default is same as the input file's. e.g pillowcase.py -d imgdir -x \"jpg\"",
+        type=str,
+    )
+
     args = parser.parse_args()
 
     run(
@@ -96,6 +104,7 @@ def main():
         args.resize_ratio,
         args.crop,
         args.compression,
+        args.extension,
     )
 
 
@@ -144,8 +153,17 @@ def sharperner(input_image, output_image):
 
 
 def run(
-    image_file, dir, output_dir, brightness, contrast, sharpness, resize, resize_ratio, crop, compression
-):
+        image_file,
+        dir,
+        output_dir,
+        brightness,
+        contrast,
+        sharpness,
+        resize,
+        resize_ratio,
+        crop,
+        compression,
+        extension):
     if dir:
         if not os.path.isdir(dir):
             print("directory does not exist, make sure it's the full path")
@@ -170,9 +188,11 @@ def run(
         all_imgs = [image_file]
 
     for img in all_imgs:
-        extension = "jpg"
-        if not extension:
+        if extension:
+            extension = "." + extension
+        else:
             extension = os.path.splitext(os.path.basename(img))[1]
+
         # if resizing, include resize value in img name
         if resize:
             img_file_name = "{}_{}.{}".format(
@@ -181,7 +201,7 @@ def run(
                 extension,
             )
         else:
-            img_file_name = "{}.{}".format(os.path.splitext(os.path.basename(img))[0], extension)
+            img_file_name = "{}{}".format(os.path.splitext(os.path.basename(img))[0], extension)
         print(img_file_name)
         # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
@@ -207,7 +227,7 @@ def run(
                 image = resize_img_ratio(image, resize_ratio)
 
             # converting PNG to JPG, fixes error
-            if extension.lower() == "jpg" and image.mode in ("RGBA", "P"):
+            if extension.lower() == ".jpg" and image.mode in ("RGBA", "P"):
                 image = image.convert("RGB")
 
             if compression:
