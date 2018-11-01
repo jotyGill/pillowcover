@@ -6,6 +6,22 @@ Licensed Under: GNU General Public License v3 or later (GPLv3+)
 ## Requirements
 python >= 3.5, pillow
 
+## Installation
+Simplest option is to install with pip using sudo.
+``` bash
+sudo python3 -m pip install pillowcover --upgrade
+```
+--OR--
+Install as a user without sudo. This installs it in ~/.local/bin/ make sure this path is in your $PATH.
+``` bash
+python3 -m pip install --user pillowcover --upgrade
+```
+If not found, add the following to your .bashrc or .zshrc
+``` bash
+# Add to PATH to Install and run programs with "pip install --user"
+export PATH=$PATH:~/.local/bin
+```
+
 ## Usage
 To increase brightness, contrast, sharpness by 20% and resize all images (landscape, portrait)
 to max dimension of 1920 pixels (using largest dimension. hight or width) and compress them to 60%
