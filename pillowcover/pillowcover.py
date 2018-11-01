@@ -13,7 +13,7 @@ from .__init__ import __license__, __version__
 def main():
     parser = argparse.ArgumentParser(
         description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
-        " Sharpness, Resize and Compress. A simple script (wrapper) using pillow."
+        " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
         " Licensed Under: {}".format(__license__)
     )
     parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
