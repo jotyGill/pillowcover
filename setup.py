@@ -25,6 +25,7 @@ setuptools.setup(
     author_email="joty@mygnu.org",
     url="https://github.com/jotyGill/pillowcover",
     keywords=["images", "image-minipulation"],
+    python_requires='>=3.5',
     install_requires=["pillow"],
     platforms=["GNU/Linux", "Ubuntu", "Debian", "Kali", "CentOS", "Arch", "Fedora"],
     packages=setuptools.find_packages(),
