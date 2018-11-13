@@ -11,18 +11,18 @@ from gooey import Gooey, GooeyParser
 from .__init__ import __license__, __version__
 
 
-# @Gooey
+@Gooey
 def main():
-    # parser = GooeyParser()
-    parser = argparse.ArgumentParser(
-        description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
-        " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
-        " Licensed Under: {}".format(__license__)
-    )
+    parser = GooeyParser()
+    # parser = argparse.ArgumentParser(
+    #     description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
+    #     " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
+    #     " Licensed Under: {}".format(__license__)
+    # )
     parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
     parser.add_argument("-i", "--img", dest="image_file", help="Path to the image file to edit", type=str)
     parser.add_argument(
-        "-d", "--dir", dest="image_dir", help="Path to the directory containing the image files", type=str,)  # widget="DirChooser")
+        "-d", "--dir", dest="image_dir", help="Path to the directory containing the image files", type=str, widget="DirChooser")
     parser.add_argument(
         "-o",
         "--out-dir",

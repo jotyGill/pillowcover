@@ -2,7 +2,7 @@ import sys
 
 import setuptools
 
-from pillowcover import __version__
+from pillowcover_gui import __version__
 
 if sys.version_info < (3, 5):
     sys.stderr.write(
@@ -16,7 +16,7 @@ with open("README.md", encoding="utf-8") as readme_file:
     readme_file.close()
 
 setuptools.setup(
-    name="pillowcover",
+    name="pillowcover_gui",
     version=__version__,
     description="Easily Manipulate Images Using Python: Change Brightness, Contrast, Sharpness, Resize",
     license="GNU General Public License v3 or later (GPLv3+)",
@@ -26,13 +26,12 @@ setuptools.setup(
     url="https://github.com/jotyGill/pillowcover",
     keywords=["images", "image-minipulation"],
     python_requires='>=3.5',
-    install_requires=["pillow"],
+    install_requires=["pillow", "gooey"],
     platforms=["GNU/Linux", "Ubuntu", "Debian", "Kali", "CentOS", "Arch", "Fedora"],
     packages=setuptools.find_packages(),
     entry_points={
         "console_scripts": [
-            "pillowcover = pillowcover.pillowcover:main",
-            "plc = pillowcover.pillowcover:main",
+            "plc-gui = pillowcover_gui.pillowcover_gui:main",
         ]
     },
     long_description=full_description,
