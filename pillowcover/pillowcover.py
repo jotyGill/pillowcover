@@ -6,21 +6,23 @@ import os
 import sys
 
 from PIL import Image, ImageEnhance, ImageFilter
+from gooey import Gooey, GooeyParser
 
 from .__init__ import __license__, __version__
 
 
+# @Gooey
 def main():
+    # parser = GooeyParser()
     parser = argparse.ArgumentParser(
         description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
         " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
         " Licensed Under: {}".format(__license__)
     )
     parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
-    parser.add_argument("image_file", nargs="?", help="Full path to the image file to edit")
+    parser.add_argument("-i", "--img", dest="image_file", help="Path to the image file to edit", type=str)
     parser.add_argument(
-        "-d", "--dir", dest="dir", help="Path to the directory containing the image files", type=str
-    )
+        "-d", "--dir", dest="image_dir", help="Path to the directory containing the image files", type=str,)  # widget="DirChooser")
     parser.add_argument(
         "-o",
         "--out-dir",
@@ -95,7 +97,7 @@ def main():
 
     run(
         args.image_file,
-        args.dir,
+        args.image_dir,
         args.output_dir,
         args.brightness,
         args.contrast,
@@ -154,7 +156,7 @@ def sharperner(input_image, output_image):
 
 def run(
         image_file,
-        dir,
+        image_dir,
         output_dir,
         brightness,
         contrast,
@@ -164,13 +166,16 @@ def run(
         crop,
         compression,
         extension):
-    if dir:
-        if not os.path.isdir(dir):
+    if not image_dir and not image_file:
+        print("directory containing images with '-d' or individual image with '-i' required")
+        sys.exit(1)
+    if image_dir:
+        if not os.path.isdir(image_dir):
             print("directory does not exist, make sure it's the full path")
             sys.exit(1)
 
         # get full path, "Downloads" will turn to "/home/user/Downloads/"
-        dir_path = os.path.abspath(dir) + "/"  # glob needs "/"
+        dir_path = os.path.abspath(image_dir) + "/"  # glob needs "/"
         extensions = ("*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG")
         # all_imgs = []
         # for extension in extensions:
@@ -189,7 +194,8 @@ def run(
 
     for img in all_imgs:
         if extension:
-            extension = "." + extension
+            if not extension[0] == ".":         # don't keep adding .s
+                extension = "." + extension
         else:
             extension = os.path.splitext(os.path.basename(img))[1]
 
