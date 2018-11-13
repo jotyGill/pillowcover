@@ -8,10 +8,13 @@ import sys
 from PIL import Image, ImageEnhance, ImageFilter
 from gooey import Gooey, GooeyParser
 
-from .__init__ import __license__, __version__
+from pillowcover_gui import __license__, __version__
 
 
-@Gooey
+@Gooey(
+    program_name='PillowCover',
+    program_discriptoin='Mass Manipulate Images Using Python',
+    requires_shell=False)
 def main():
     parser = GooeyParser()
     # parser = argparse.ArgumentParser(
@@ -19,8 +22,9 @@ def main():
     #     " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
     #     " Licensed Under: {}".format(__license__)
     # )
-    parser.add_argument("-v", "--version", action="version", version="pollowcover " + __version__)
-    parser.add_argument("-i", "--img", dest="image_file", help="Path to the image file to edit", type=str)
+    # parser.add_argument("-v", "--version", action="version", version="pillowcover " + __version__)
+    parser.add_argument("-i", "--img", dest="image_file",
+                        help="Path to the image file to edit", type=str, widget="FileChooser")
     parser.add_argument(
         "-d", "--dir", dest="image_dir", help="Path to the directory containing the image files", type=str, widget="DirChooser")
     parser.add_argument(
@@ -30,6 +34,7 @@ def main():
         help="Path to output directory to store edited images.\
         by default they get stored in (parent director)/pillowcover-output",
         type=str,
+        widget="DirChooser",
     )
     parser.add_argument(
         "-b",
