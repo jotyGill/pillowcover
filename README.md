@@ -2,6 +2,7 @@
 Mass Manipulate Images Using Python: Change Brightness, Contrast, Sharpness, Resize, Compress, Crop and Convert (e.g png to jpg).
 A simple script (wrapper) using pillow.
 Licensed Under: GNU General Public License v3 or later (GPLv3+)
+For the Gui option checkout branch 'gui'
 
 ## Requirements
 python >= 3.5, pillow
@@ -38,22 +39,21 @@ plc -d /home/user/Pictures/ -k "0,0,640,480" -x jpg
 
 ## Usage Options
 ``` bash
-usage: pillowcover [-h] [-v] [-d DIR] [-o OUTPUT_DIR] [-b BRIGHTNESS] [-c CONTRAST]
-           [-s SHARPNESS] [-r RESIZE] [-R RESIZE_RATIO] [-k CROP]
-           [-q COMPRESSION] [-x EXTENSION]
-           [image_file]
+usage: plc [-h] [-v] [-i IMAGE_FILE] [-d IMAGE_DIR] [-o OUTPUT_DIR]
+           [-b BRIGHTNESS] [-c CONTRAST] [-s SHARPNESS] [-r RESIZE]
+           [-R RESIZE_RATIO] [-k CROP] [-q COMPRESSION] [-x EXTENSION]
 
 PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,
 Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using
 pillow. Licensed Under: GNU General Public License v3 or later (GPLv3+)
 
-positional arguments:
-  image_file            Full path to the image file to edit
-
 optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program\'s version number and exit
-  -d DIR, --dir DIR     Path to the directory containing the image files
+  -i IMAGE_FILE, --img IMAGE_FILE
+                        Path to the image file to edit
+  -d IMAGE_DIR, --dir IMAGE_DIR
+                        Path to the directory containing the image files
   -o OUTPUT_DIR, --out-dir OUTPUT_DIR
                         Path to output directory to store edited images. by
                         default they get stored in (parent
