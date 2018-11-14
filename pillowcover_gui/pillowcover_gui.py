@@ -198,10 +198,7 @@ def run(
         all_imgs = [image_file]
 
     for img in all_imgs:
-        if extension:
-            if not extension[0] == ".":         # don't keep adding .s
-                extension = "." + extension
-        else:
+        if not extension:
             extension = os.path.splitext(os.path.basename(img))[1]
 
         # if resizing, include resize value in img name
@@ -212,7 +209,7 @@ def run(
                 extension,
             )
         else:
-            img_file_name = "{}{}".format(os.path.splitext(os.path.basename(img))[0], extension)
+            img_file_name = "{}.{}".format(os.path.splitext(os.path.basename(img))[0], extension)
         print(img_file_name)
         # if output_dir not provided, save images in (parent)/pillowcover-output folder
         if not output_dir:
@@ -238,7 +235,7 @@ def run(
                 image = resize_img_ratio(image, resize_ratio)
 
             # converting PNG to JPG, fixes error
-            if extension.lower() == ".jpg" and image.mode in ("RGBA", "P"):
+            if extension.lower() == "jpg" and image.mode in ("RGBA", "P"):
                 image = image.convert("RGB")
 
             if compression:
