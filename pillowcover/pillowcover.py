@@ -6,14 +6,11 @@ import os
 import sys
 
 from PIL import Image, ImageEnhance, ImageFilter
-from gooey import Gooey, GooeyParser
 
 from .__init__ import __license__, __version__
 
 
-# @Gooey
 def main():
-    # parser = GooeyParser()
     parser = argparse.ArgumentParser(
         description="PillowCover: Mass Manipulate Images Using Python: Change Brightness, Contrast,"
         " Sharpness, Resize, Compress, Crop and Convert. A simple script (wrapper) using pillow."
