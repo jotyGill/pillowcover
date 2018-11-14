@@ -32,6 +32,7 @@ setuptools.setup(
     entry_points={
         "console_scripts": [
             "plc-gui = pillowcover_gui.pillowcover_gui:main",
+            "pillowcover-gui = pillowcover_gui.pillowcover_gui:main",
         ]
     },
     long_description=full_description,
