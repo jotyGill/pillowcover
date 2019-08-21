@@ -192,6 +192,9 @@ def run(
     for img in all_imgs:
         if not extension:
             extension = os.path.splitext(os.path.basename(img))[1]
+        # remove the . in .jpg for example
+        if extension[0] == ".":
+            extension = extension[1:]
 
         # if resizing, include resize value in img name
         if resize:
